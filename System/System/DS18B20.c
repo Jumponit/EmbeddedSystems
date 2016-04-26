@@ -8,8 +8,9 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "ds18b20.h"
+#include "DS18B20.h"
 #include "serial.h"
+#include "delay_usec.s"
 
 /************************************************************************/
 /* Attempts to determine whether there is a sensor attached.            */
@@ -45,7 +46,7 @@ unsigned char ow_reset(void)
 /************************************************************************/
 /* Read a single bit from the sensor                                    */
 /************************************************************************/
-unsigned char read_bit(void)
+unsigned char ow_read_bit(void)
 {
 	//pull low
 	DDRE |= (1 << PE4);
@@ -62,7 +63,7 @@ unsigned char read_bit(void)
 /************************************************************************/
 /* Write a single bit                                                   */
 /************************************************************************/
-void write_bit(char bitval)
+void ow_write_bit(char bitval)
 {
 	//pull low
 	DDRE |= (1 << PE4);
@@ -80,14 +81,14 @@ void write_bit(char bitval)
 }
 
 /************************************************************************/
-/* Read a single byte                                                   */
+/* Read a single byte from the sensor                                   */
 /************************************************************************/
-unsigned char read_byte(void) 
+unsigned char ow_read_byte(void) 
 {
 	unsigned char value = 0;
 	unsigned char i;
 	for (i = 0; i < 8; i++) {
-		if (read_bit()) {
+		if (ow_read_bit()) {
 			value |= 0x01 << i; //reads a bit and left-shifts it into place
 		}
 		delay_usec(19); //wait 20us
@@ -95,38 +96,42 @@ unsigned char read_byte(void)
 	return value;
 }
 
-void write_byte(char val)
+/************************************************************************/
+/* Write a single byte to the sensor                                    */
+/************************************************************************/
+void ow_write_byte(char val)
 {
 	unsigned char i;
 	unsigned char temp;
 	for (i = 0; i < 8; i++) {
 		temp = val >> i;
 		temp &= 0x01;
-		write_bit(temp);
+		ow_write_bit(temp);
 	}
 	
 	delay_usec(119); //wait 120us
 }
 
-void read_temperature(void)
+/************************************************************************/
+/* Read the current temperature from the sensor                         */
+/************************************************************************/
+int ow_read_temperature(void)
 {
 	char get[10];
 	char temp_lsb,temp_msb;
 	int k;
-	char temp_f,temp_c;
+	char temp_c;
+	//char temp_f;
 	ow_reset();
-	write_byte(0xCC); //Skip ROM
-	write_byte(0x44); // Start Conversion
+	ow_write_byte(0xCC); //Skip ROM
+	ow_write_byte(0x44); // Start Conversion
 	delay_usec(119); //wait 120us
 	ow_reset();
-	write_byte(0xCC); // Skip ROM
-	write_byte(0xBE); // Read Scratch Pad
+	ow_write_byte(0xCC); // Skip ROM
+	ow_write_byte(0xBE); // Read Scratch Pad
 	for (k=0; k<9; k++) {
-		get[k] = read_byte();
+		get[k] = ow_read_byte();
 	}
-	char * message = (char *) malloc(64);
-	sprintf(message, "\n\r ScratchPAD DATA = %X%X%X%X%X%X%X%X%X\n\r",get[8],get[7],get[6],get[5],get[4],get[3],get[2],get[1],get[0]);
-	serial_write_string(message, strlen(message));
 	temp_msb = get[1]; // Sign byte + lsbit
 	temp_lsb = get[0]; // Temp data plus lsb
 	if (temp_msb <= 0x80){temp_lsb = (temp_lsb/2);} // shift to get whole degree
@@ -134,12 +139,17 @@ void read_temperature(void)
 	if (temp_msb >= 0x80) {temp_lsb = (~temp_lsb)+1;} // twos complement
 	if (temp_msb >= 0x80) {temp_lsb = (temp_lsb/2);}// shift to get whole degree
 	if (temp_msb >= 0x80) {temp_lsb = ((-1)*temp_lsb);} // add sign bit
-	sprintf(message, "\n\rTempC= %d degrees C\n\r", (int)temp_lsb ); // print temp. C
-	serial_write_string(message, strlen(message));
 	temp_c = temp_lsb; // ready for conversion to Fahrenheit
-	temp_f = (((int)temp_c)* 9)/5 + 32;
-	
-	sprintf(message, "\n\rTempF= %d degrees F\n\r", (int)temp_f ); // print temp. F
-	serial_write_string(message, strlen(message));
-	free(message);
+	//temp_f = (((int)temp_c)* 9)/5 + 32;
+	return temp_c;
+}
+
+/************************************************************************/
+/* Print the temperature to the serial port. (must have already opened serial)*/
+/************************************************************************/
+void ow_print_temp(void) {
+	char temp_c = ow_read_temperature();
+	//char * message = "0x%x\n\r";
+	//sprintf(message, message, temp_c);
+	Serial_write(&temp_c, 1);
 }
