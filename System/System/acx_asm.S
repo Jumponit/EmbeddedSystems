@@ -1,186 +1,125 @@
+
 /*
- * acx_asm.s
+ * Kernel_SP13_asm.s
  *
- * Created: 2/9/2016
- * Author: Taylor Morris
+ *  Created: 4/11/2013 11:09:06 AM
+ *  Author: E. Frank Barry
  */ 
  #define __SFR_OFFSET 0
  #include <avr/io.h>
+ #include "acx.h"
 
 
 		.section .text
 		.global x_yield
 x_yield:
-//------------------------------------------------------------------
-// Save "callee-save" registers
-//------------------------------------------------------------------
-main:	
-		push	r2
-		push	r3
-		push	r4
-		push	r5
-		push	r6
-		push	r7
-		push	r8
-		push	r9
-		push	r10
-		push	r11
-		push	r12
-		push	r13
-		push	r14
-		push	r15
-		push	r16
-		push	r17
-		push	r28
-		push	r29
+	// Save "callee-save" registers
+		push  r2
+		push  r3
+		push  r4
+		push  r5
+		push  r6
+		push  r7
+		push  r8
+		push  r9
+		push  r10
+		push  r11
+		push  r12
+		push  r13
+		push  r14
+		push  r15
+		push  r16
+		push  r17
+		push  r28
+		push  r29
 
 //------------------------------------------------------------------
 //   Get thread ID and mask
 //------------------------------------------------------------------
-
-		lds		r17, x_thread_id
-		lds		r13, x_thread_mask
+		lds   r18,x_thread_id
+		lds   r19,x_thread_mask
 
 //------------------------------------------------------------------
 // Store SP into current thread's stack-save area
 //------------------------------------------------------------------
+		cli					;disable interrupts
+		in		r14,SPL
+		in		r15,SPH
+		sei					;re-enable interrupts--assumes that interrupts must be enabled--does not save state of flags
 
-		//ldi		r17, 0x3	//test
 
-		ldi		r28, lo8(stack)
-		ldi		r29, hi8(stack)
-		add		r17, r17
-		add		r17, r17
-		add		r28, r17
-		adc		r29, r1
-		adiw	Y, 0x2
-		cli
-		in		r16, SPL
-		st		Y+, r16
-		in		r16, SPH
-		st		Y, r16
-		sei
-
-		//This does not work completely
-canary_check:	
-		ldi		r28, lo8(stack)
-		ldi		r29, hi8(stack)
-		add		r17, r17
-		add		r17, r17
-		add		r28, r17
-		adc		r29, r1
-
-		ld		r16, Y
-		ldi		r17, 0x80
-		add		r16, r15
-
-		cpi		r16, 0xAF
-		//idk after this
+		ldi		r30,lo8(stack)
+		ldi		r31,hi8(stack)
+		lsl		r18
+		lsl		r18
+		add		r30,r18
+		adc		r31,r1  ;z = stacks+(id*4) to give pointer to stacks[thread_id].ps
+		st		z+,r14	;save SPL
+		st		z,r15	;save SPH
 
 ;------------------------------------------------------------------------
-; Schedule next thread -- must use caller-save registers below here
+; Schedule next thread -- must use caller save registers below here
 ;                         because we can reach this without saving regs
-;                         if entered from x_new() function
+;                         if reached from k_new() function
 ;-------------------------------------------------------------------------
 		.global	x_schedule
 x_schedule:
 	// determine READY status of each thread
-
-		lds		r18, disable_status
-		lds		r19, suspend_status
-		lds		r20, delay_status
-		or		r19, r18
-		or		r20, r19
-
+		lds		r18,x_disable_status
+		lds		r19,x_delay_status
+		lds		r20,x_suspend_status
+		or		r18,r19
+		or		r18,r20
+		lds		r19, x_thread_id		;get current thread
+		lds		r20, x_thread_mask
+		ldi		r22,NUM_THREADS		;max number of threads
+		clc							;make sure Carry flag is clear
 ;------------------------------------------------
 ;   Loop through all threads to test for READY
 ;------------------------------------------------
-
-		lds		r23, x_thread_id
-		ldi		r21, 0x0			//the current thread bit
-		ldi		r22, 0x0
-		ldi		r18, 0x0
-		ldi		r19, 0x7
-		cp		r23, r19
-		breq	check
-		mov		r22, r23
-		inc		r22
-
-rotate:	
-		clc
-		ror		r20
-		brcs	rotate_carry
-cont:	inc		r21
-		dec		r22
-		cp		r1, r22
-		brne	rotate
-		rjmp	check
-
-rotate_carry:
-		ori		r20, 128
-		rjmp	cont
-
-check:
-		mov		r24, r20
-		ori		r24, 0xFE
-		cpi		r24, 0xFF
-		brne	end
-		ror		r20
-		inc		r21
-		cpi		r21, 0x8
-		breq	fix
-		inc		r18
-		cp		r18, r19
-		brne	check
-
-original_check:
-		mov		r24, r20
-		ori		r24, 0xFE
-		cpi		r24, 0xFF
-		breq	rest
-
-end:
-		sts		x_thread_id, r21
-		rjmp	restore
-
-fix:
-		ldi		r21, 0x0
-		inc		r18
-		cp		r18, r19
-		brne	check
-		rjmp		original_check
-
+1:
+		inc		r19					;inc to next thread id...
+		andi	r19,7				;...modulo 8
+		rol		r20					;shift mask left
+		brcc	2f					;skip next instruction if C is clear
+		rol		r20					;perform second rotate if bit7 was set (to rotate through Carry flag)
+2:
+		mov		r23,r20				;save copy of mask
+		and		r20,r18				;test bit corresponding to status of next thread
+		breq	restore				;break out if READY
+		dec		r22					;decrement thread count
+		brne	1b					;back to test next thread
 ;----------------------------------------------------------
 ;  SLEEP HERE:  Here's where we sleep (no threads are READY)
 ;  but for now we'll jump back to schedule loop again
 ;----------------------------------------------------------
 		; add sleep instructions here...
 
-rest:	sleep
 		rjmp	x_schedule			
 
 ;---------------------------------------------------
 ; Restore context of next READY thread
 ;---------------------------------------------------
 restore:
-		//	restore SP from thread's sp
+		sts		x_thread_id,r19
+		sts		x_thread_mask,r23
 
-		ldi		r30, lo8(stack)
-		ldi		r31, hi8(stack)
-		add		r21, r21
-		add		r21, r21
-		add		r30, r21
-		adc		r31, r1
-		adiw	Z, 0x2
+		ldi		r30,lo8(stack)
+		ldi		r31,hi8(stack)
+		lsl		r19
+		lsl		r19
+		add		r30,r19
+		adc		r31,r1	;z = stacks+(id*4) to give pointer to stacks[thread_id].sp
+		ld		r18,z+	;get SPL
+		ld		r19,z	;get SPH
+		
 		cli
-		ld		r18, Z+
-		out		SPL, r18
-		ld		r18, Z
-		out		SPH, r18
+		out		SPL,r18		;restore SP
+		out		SPH,r19
 		sei
 
-		// Restore registers
 
+		// Restore registers
 		pop		r29
 		pop		r28
 		pop		r17
@@ -202,3 +141,35 @@ restore:
 
 		// Return to next thread
 		ret
+
+//----------------------------------------------------------------------------------------------
+//  Function: bit2mask8
+//
+//  Description: Returns a bit mask corresponding to thread ID parameter.
+//
+//  Input params:  byte id  -- must by integer between 0 and 7
+//  Returns:       mask - a bit mask having a single bit set corresponding to input ID
+//						  (interpreted as bit number)
+//-----------------------------------------------------------------------------------------------
+		.global bit2mask8
+bit2mask8:
+		;r24 containts thread ID input
+		ldi r30,lo8(bitmask8_table)
+		ldi r31,hi8(bitmask8_table)
+		add r30,r24
+		adc r31,r1		;r1 always has 0 in it--so just add carry
+		lpm r24,Z		;lpm accesses program memory (FLASH) indirectly using Z reg pair (r31:r30)
+		ret
+//
+// Put table of mask values in .text section and use LPM instruction to access...
+//
+		.text
+bitmask8_table:
+		.byte 0x01
+		.byte 0x02
+		.byte 0x04
+		.byte 0x08
+		.byte 0x10
+		.byte 0x20
+		.byte 0x40
+		.byte 0x80

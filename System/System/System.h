@@ -5,19 +5,19 @@
  *  Author: barryef
  */ 
 
-#include <avr/io.h>
-
 #ifndef SYSTEM_H_
 #define SYSTEM_H_
 
+#include <avr/io.h>
 
 #ifndef NULL
 #define NULL ((void *)0)
 #endif
 
+#ifndef __ASSEMBLER__
 typedef uint8_t byte;
 
-
+#endif
 
 
 

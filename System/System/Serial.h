@@ -65,15 +65,19 @@ typedef struct {
 #define P3_RX_BUFFER_SIZE   32
 #define P3_TX_BUFFER_SIZE   32
 
-int Serial_open(int, long, int );
+int Serial_open(int port, long speed, int config);
+void Serial_close(int port);
+int Serial_available(int port);
+int Serial_read(int port);
+int Serial_write(int port, char data);
+
+/*int Serial_open(int, long, int );
 void Serial_close(int);
 void Serial_config(int, long, int);
 int Serial_available(int);
 int Serial_read(int);
 int Serial_write(int, char);
-void Serial0_config(long,int);
-char Serial0_poll_read();
-void Serial0_poll_write(char);
-void Serial0_poll_print(char *);
+*/
+int Serial_write_string(int port, char * data, int data_length);
 
 #endif /* SERIAL_H_ */

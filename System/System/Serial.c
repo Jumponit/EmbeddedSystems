@@ -12,11 +12,6 @@
 #include "Serial.h"
 #include "Queues.h"
 
-int Serial_open(int port, long speed, int config);
-void Serial_close(int port);
-int Serial_available(int port);
-int Serial_read(int port);
-int Serial_write(int port, char data);
 
 //To hold the buffers.
 char buffer[8][64];
@@ -125,14 +120,14 @@ int Serial_write(int port, char data)
 	Q_putc(ports[port].tx_qid, data);
 	regs[port]->ucsrb |= (0x1 << 5);
 	return 1;
-	
-// 	while(1)
-// 	{
-// 		if((UCSR0A | 0xDF) == 0xFF)
-// 		{
-// 			UDR0 = data;
-// 		}
-// 	}
+
+}
+
+int Serial_write_string(int port, char * data, int data_length) {
+	for (int i = 0; i < data_length; i++) {
+		Serial_write(port, data[i]);
+	}
+	return 1;
 }
 
 ISR(USART0_UDRE_vect)
