@@ -7,6 +7,7 @@
 #include <avr/io.h>
 #include <util/delay.h>
 #include <string.h>
+#include <stdio.h>
 #include "System.h"
 #include "Serial.h"
 #include "Queues.h"
@@ -29,6 +30,9 @@ volatile char target_temp;
  */
 volatile char service_mode;
 
+
+volatile char * format = "%x";
+volatile char celsius = 1;
 /*
  * Handles serial I/O
  */
@@ -38,6 +42,7 @@ void io_controller(void) {
 	int opcode_len = 3;
 	char command[command_len];
 	char opcode[opcode_len];
+	char operand;
 	char message[64];
 	char * str = message;
 	while(1) {
@@ -73,8 +78,48 @@ void io_controller(void) {
 					//do service mode things
 		
 				} else {
+					operand = command[2];
 					//do operating mode things
-					
+					if (!strcmp(opcode, "ST")) {
+						//set temperature
+						target_temp = operand;
+						str = "Set target temperature to %d degrees Celsius\n\r";
+						if (sprintf(str,str,target_temp) < 0) {
+							str = "Formatting Error\n\r";
+						}
+						Serial_write_string(0,str,strlen(str));
+					} else if (!strcmp(opcode, "SR")) {
+						//set sample rate
+					} else if (!strcmp(opcode, "SD")) {
+						//set display format
+						switch (operand) {
+							case 'F':
+								format = "%d";
+								celsius = 0;
+								str = "Set format to Fahrenheit\n\r";
+								Serial_write_string(0,str,strlen(str));
+								break;
+							case 'C':
+								format = "%d";
+								celsius = 1;
+								str = "Set format to Celsius\n\r";
+								Serial_write_string(0,str,strlen(str));
+								break;
+							case 'X':
+								celsius = 1;
+								format="%x";
+								str = "Set format to Celsius Hexadecimal\n\r";
+								Serial_write_string(0,str,strlen(str));
+								break;
+							default:
+								str = "Unrecognized format\n\r";
+								Serial_write_string(0,str,strlen(str));
+								break;
+						}
+					} else {
+						str = "Unrecognized command\n\r";
+						Serial_write_string(0,str,strlen(str));
+					}
 				}
 			}
 

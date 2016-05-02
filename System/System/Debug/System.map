@@ -8,6 +8,18 @@ c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/..
                               acx.o (__do_clear_bss)
 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr6\libc.a(strcmp.o)
                               main.o (strcmp)
+c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr6\libc.a(sprintf.o)
+                              main.o (sprintf)
+c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr6\libc.a(vfprintf_std.o)
+                              c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr6\libc.a(sprintf.o) (vfprintf)
+c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr6\libc.a(strnlen_P.o)
+                              c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr6\libc.a(vfprintf_std.o) (strnlen_P)
+c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr6\libc.a(strnlen.o)
+                              c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr6\libc.a(vfprintf_std.o) (strnlen)
+c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr6\libc.a(fputc.o)
+                              c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr6\libc.a(vfprintf_std.o) (fputc)
+c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr6\libc.a(ultoa_invert.o)
+                              c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr6\libc.a(vfprintf_std.o) (__ultoa_invert)
 
 Allocating common symbols
 Common symbol       size              file
@@ -125,6 +137,24 @@ Discarded input sections
  .text          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr6\libc.a(strcmp.o)
  .data          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr6\libc.a(strcmp.o)
  .bss           0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr6\libc.a(strcmp.o)
+ .text          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr6\libc.a(sprintf.o)
+ .data          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr6\libc.a(sprintf.o)
+ .bss           0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr6\libc.a(sprintf.o)
+ .text          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr6\libc.a(vfprintf_std.o)
+ .data          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr6\libc.a(vfprintf_std.o)
+ .bss           0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr6\libc.a(vfprintf_std.o)
+ .text          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr6\libc.a(strnlen_P.o)
+ .data          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr6\libc.a(strnlen_P.o)
+ .bss           0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr6\libc.a(strnlen_P.o)
+ .text          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr6\libc.a(strnlen.o)
+ .data          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr6\libc.a(strnlen.o)
+ .bss           0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr6\libc.a(strnlen.o)
+ .text          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr6\libc.a(fputc.o)
+ .data          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr6\libc.a(fputc.o)
+ .bss           0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr6\libc.a(fputc.o)
+ .text          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr6\libc.a(ultoa_invert.o)
+ .data          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr6\libc.a(ultoa_invert.o)
+ .bss           0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr6\libc.a(ultoa_invert.o)
 
 Memory Configuration
 
@@ -249,7 +279,7 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000      0xfc2
+.text           0x00000000     0x1680
  *(.vectors)
  .vectors       0x00000000       0xe4 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.0.90/gcc/dev/atmega2560/avr6/crtatmega2560.o
                 0x00000000                __vector_default
@@ -302,161 +332,179 @@ END GROUP
  *(.init8)
  *(.init8)
  *(.init9)
- .init9         0x0000011e        0x4 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.0.90/gcc/dev/atmega2560/avr6/crtatmega2560.o
+ .init9         0x0000011e        0x6 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.0.90/gcc/dev/atmega2560/avr6/crtatmega2560.o
  *(.init9)
  *(.text)
- .text          0x00000122        0x2 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.0.90/gcc/dev/atmega2560/avr6/crtatmega2560.o
-                0x00000122                __vector_38
-                0x00000122                __vector_22
-                0x00000122                __vector_28
-                0x00000122                __vector_1
-                0x00000122                __vector_32
-                0x00000122                __vector_34
-                0x00000122                __vector_24
-                0x00000122                __vector_12
-                0x00000122                __vector_46
-                0x00000122                __bad_interrupt
-                0x00000122                __vector_6
-                0x00000122                __vector_31
-                0x00000122                __vector_35
-                0x00000122                __vector_39
-                0x00000122                __vector_3
-                0x00000122                __vector_23
-                0x00000122                __vector_30
-                0x00000122                __vector_45
-                0x00000122                __vector_11
-                0x00000122                __vector_13
-                0x00000122                __vector_17
-                0x00000122                __vector_19
-                0x00000122                __vector_56
-                0x00000122                __vector_7
-                0x00000122                __vector_49
-                0x00000122                __vector_41
-                0x00000122                __vector_43
-                0x00000122                __vector_27
-                0x00000122                __vector_5
-                0x00000122                __vector_33
-                0x00000122                __vector_47
-                0x00000122                __vector_4
-                0x00000122                __vector_44
-                0x00000122                __vector_9
-                0x00000122                __vector_2
-                0x00000122                __vector_15
-                0x00000122                __vector_29
-                0x00000122                __vector_40
-                0x00000122                __vector_8
-                0x00000122                __vector_48
-                0x00000122                __vector_14
-                0x00000122                __vector_53
-                0x00000122                __vector_10
-                0x00000122                __vector_50
-                0x00000122                __vector_16
-                0x00000122                __vector_18
-                0x00000122                __vector_20
-                0x00000122                __vector_42
- .text          0x00000124       0xd0 acx_asm.o
-                0x00000124                x_yield
-                0x00000168                x_schedule
-                0x000001e0                bit2mask8
- .text          0x000001f4       0x16 delay_usec.o
-                0x000001f4                delay_usec
-                0x0000020a                . = ALIGN (0x2)
+ .text          0x00000124        0x2 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.0.90/gcc/dev/atmega2560/avr6/crtatmega2560.o
+                0x00000124                __vector_38
+                0x00000124                __vector_22
+                0x00000124                __vector_28
+                0x00000124                __vector_1
+                0x00000124                __vector_32
+                0x00000124                __vector_34
+                0x00000124                __vector_24
+                0x00000124                __vector_12
+                0x00000124                __vector_46
+                0x00000124                __bad_interrupt
+                0x00000124                __vector_6
+                0x00000124                __vector_31
+                0x00000124                __vector_35
+                0x00000124                __vector_39
+                0x00000124                __vector_3
+                0x00000124                __vector_23
+                0x00000124                __vector_30
+                0x00000124                __vector_45
+                0x00000124                __vector_11
+                0x00000124                __vector_13
+                0x00000124                __vector_17
+                0x00000124                __vector_19
+                0x00000124                __vector_56
+                0x00000124                __vector_7
+                0x00000124                __vector_49
+                0x00000124                __vector_41
+                0x00000124                __vector_43
+                0x00000124                __vector_27
+                0x00000124                __vector_5
+                0x00000124                __vector_33
+                0x00000124                __vector_47
+                0x00000124                __vector_4
+                0x00000124                __vector_44
+                0x00000124                __vector_9
+                0x00000124                __vector_2
+                0x00000124                __vector_15
+                0x00000124                __vector_29
+                0x00000124                __vector_40
+                0x00000124                __vector_8
+                0x00000124                __vector_48
+                0x00000124                __vector_14
+                0x00000124                __vector_53
+                0x00000124                __vector_10
+                0x00000124                __vector_50
+                0x00000124                __vector_16
+                0x00000124                __vector_18
+                0x00000124                __vector_20
+                0x00000124                __vector_42
+ .text          0x00000126       0xd0 acx_asm.o
+                0x00000126                x_yield
+                0x0000016a                x_schedule
+                0x000001e2                bit2mask8
+ .text          0x000001f6       0x16 delay_usec.o
+                0x000001f6                delay_usec
+                0x0000020c                . = ALIGN (0x2)
  *(.text.*)
- .text.x_new    0x0000020a       0x70 acx.o
-                0x0000020a                x_new
+ .text.x_new    0x0000020c       0x70 acx.o
+                0x0000020c                x_new
  .text.init_System_Timer
-                0x0000027a       0x12 acx.o
-                0x0000027a                init_System_Timer
- .text.x_init   0x0000028c       0xee acx.o
-                0x0000028c                x_init
- .text.x_delay  0x0000037a       0x2c acx.o
-                0x0000037a                x_delay
+                0x0000027c       0x12 acx.o
+                0x0000027c                init_System_Timer
+ .text.x_init   0x0000028e       0xee acx.o
+                0x0000028e                x_init
+ .text.x_delay  0x0000037c       0x2c acx.o
+                0x0000037c                x_delay
  .text.__vector_21
-                0x000003a6       0x98 acx.o
-                0x000003a6                __vector_21
+                0x000003a8       0x98 acx.o
+                0x000003a8                __vector_21
  .text.ow_reset
-                0x0000043e       0x2a DS18B20.o
-                0x0000043e                ow_reset
+                0x00000440       0x2a DS18B20.o
+                0x00000440                ow_reset
  .text.ow_read_bit
-                0x00000468       0x14 DS18B20.o
-                0x00000468                ow_read_bit
+                0x0000046a       0x14 DS18B20.o
+                0x0000046a                ow_read_bit
  .text.ow_write_bit
-                0x0000047c       0x16 DS18B20.o
-                0x0000047c                ow_write_bit
+                0x0000047e       0x16 DS18B20.o
+                0x0000047e                ow_write_bit
  .text.ow_read_byte
-                0x00000492       0x48 DS18B20.o
-                0x00000492                ow_read_byte
+                0x00000494       0x48 DS18B20.o
+                0x00000494                ow_read_byte
  .text.ow_write_byte
-                0x000004da       0x3a DS18B20.o
-                0x000004da                ow_write_byte
+                0x000004dc       0x3a DS18B20.o
+                0x000004dc                ow_write_byte
  .text.ow_read_temperature
-                0x00000514       0x8a DS18B20.o
-                0x00000514                ow_read_temperature
+                0x00000516       0x8a DS18B20.o
+                0x00000516                ow_read_temperature
  .text.io_controller
-                0x0000059e       0xe8 main.o
-                0x0000059e                io_controller
+                0x000005a0      0x212 main.o
+                0x000005a0                io_controller
  .text.box_controller
-                0x00000686       0x12 main.o
-                0x00000686                box_controller
+                0x000007b2       0x12 main.o
+                0x000007b2                box_controller
  .text.sensor_controller
-                0x00000698       0x1e main.o
-                0x00000698                sensor_controller
- .text.main     0x000006b6       0x26 main.o
-                0x000006b6                main
- .text.Q_putc   0x000006dc       0xde Queues.o
-                0x000006dc                Q_putc
- .text.Q_getc   0x000007ba       0xe2 Queues.o
-                0x000007ba                Q_getc
+                0x000007c4       0x1e main.o
+                0x000007c4                sensor_controller
+ .text.main     0x000007e2       0x26 main.o
+                0x000007e2                main
+ .text.Q_putc   0x00000808       0xde Queues.o
+                0x00000808                Q_putc
+ .text.Q_getc   0x000008e6       0xe2 Queues.o
+                0x000008e6                Q_getc
  .text.Q_create
-                0x0000089c       0x7c Queues.o
-                0x0000089c                Q_create
+                0x000009c8       0x7c Queues.o
+                0x000009c8                Q_create
  .text.Serial_open
-                0x00000918      0x204 Serial.o
-                0x00000918                Serial_open
+                0x00000a44      0x204 Serial.o
+                0x00000a44                Serial_open
  .text.Serial_read
-                0x00000b1c       0x46 Serial.o
-                0x00000b1c                Serial_read
+                0x00000c48       0x46 Serial.o
+                0x00000c48                Serial_read
  .text.Serial_read_string
-                0x00000b62       0x66 Serial.o
-                0x00000b62                Serial_read_string
+                0x00000c8e       0x66 Serial.o
+                0x00000c8e                Serial_read_string
  .text.Serial_write
-                0x00000bc8       0x4a Serial.o
-                0x00000bc8                Serial_write
+                0x00000cf4       0x4a Serial.o
+                0x00000cf4                Serial_write
  .text.Serial_write_string
-                0x00000c12       0x3a Serial.o
-                0x00000c12                Serial_write_string
+                0x00000d3e       0x3a Serial.o
+                0x00000d3e                Serial_write_string
  .text.__vector_26
-                0x00000c4c       0x82 Serial.o
-                0x00000c4c                __vector_26
+                0x00000d78       0x82 Serial.o
+                0x00000d78                __vector_26
  .text.__vector_37
-                0x00000cce       0x82 Serial.o
-                0x00000cce                __vector_37
+                0x00000dfa       0x82 Serial.o
+                0x00000dfa                __vector_37
  .text.__vector_52
-                0x00000d50       0x82 Serial.o
-                0x00000d50                __vector_52
+                0x00000e7c       0x82 Serial.o
+                0x00000e7c                __vector_52
  .text.__vector_55
-                0x00000dd2       0x82 Serial.o
-                0x00000dd2                __vector_55
+                0x00000efe       0x82 Serial.o
+                0x00000efe                __vector_55
  .text.__vector_25
-                0x00000e54       0x56 Serial.o
-                0x00000e54                __vector_25
+                0x00000f80       0x56 Serial.o
+                0x00000f80                __vector_25
  .text.__vector_36
-                0x00000eaa       0x56 Serial.o
-                0x00000eaa                __vector_36
+                0x00000fd6       0x56 Serial.o
+                0x00000fd6                __vector_36
  .text.__vector_51
-                0x00000f00       0x56 Serial.o
-                0x00000f00                __vector_51
+                0x0000102c       0x56 Serial.o
+                0x0000102c                __vector_51
  .text.__vector_54
-                0x00000f56       0x56 Serial.o
-                0x00000f56                __vector_54
+                0x00001082       0x56 Serial.o
+                0x00001082                __vector_54
  .text.avr-libc
-                0x00000fac       0x12 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr6\libc.a(strcmp.o)
-                0x00000fac                strcmp
-                0x00000fbe                . = ALIGN (0x2)
+                0x000010d8       0x12 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr6\libc.a(strcmp.o)
+                0x000010d8                strcmp
+ .text.avr-libc
+                0x000010ea       0x5e c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr6\libc.a(sprintf.o)
+                0x000010ea                sprintf
+ .text.avr-libc
+                0x00001148      0x3dc c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr6\libc.a(vfprintf_std.o)
+                0x00001148                vfprintf
+ .text.avr-libc
+                0x00001524       0x16 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr6\libc.a(strnlen_P.o)
+                0x00001524                strnlen_P
+ .text.avr-libc
+                0x0000153a       0x16 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr6\libc.a(strnlen.o)
+                0x0000153a                strnlen
+ .text.avr-libc
+                0x00001550       0x70 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr6\libc.a(fputc.o)
+                0x00001550                fputc
+ .text.avr-libc
+                0x000015c0       0xbc c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr6\libc.a(ultoa_invert.o)
+                0x000015c0                __ultoa_invert
+                0x0000167c                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x00000fbe        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr6\libgcc.a(_exit.o)
-                0x00000fbe                _exit
-                0x00000fbe                exit
+ .fini9         0x0000167c        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr6\libgcc.a(_exit.o)
+                0x0000167c                _exit
+                0x0000167c                exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -475,67 +523,71 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x00000fbe        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr6\libgcc.a(_exit.o)
+ .fini0         0x0000167c        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr6\libgcc.a(_exit.o)
  *(.fini0)
-                0x00000fc2                _etext = .
+                0x00001680                _etext = .
 
-.data           0x00800200       0x84 load address 0x00000fc2
+.data           0x00800200      0x15c load address 0x00001680
                 0x00800200                PROVIDE (__data_start, .)
  *(.data)
  *(.data*)
- .data.regs     0x00800200        0x8 Serial.o
-                0x00800200                regs
- .data.ports    0x00800208       0x28 Serial.o
-                0x00800208                ports
+ .data.celsius  0x00800200        0x1 main.o
+                0x00800200                celsius
+ .data.format   0x00800201        0x2 main.o
+                0x00800201                format
+ .data.regs     0x00800203        0x8 Serial.o
+                0x00800203                regs
+ .data.ports    0x0080020b       0x28 Serial.o
+                0x0080020b                ports
  *(.rodata)
  *(.rodata*)
  .rodata.str1.1
-                0x00800230       0x53 main.o
+                0x00800233      0x128 main.o
  *(.gnu.linkonce.d*)
-                0x00800284                . = ALIGN (0x2)
- *fill*         0x00800283        0x1 
-                0x00800284                _edata = .
-                0x00800284                PROVIDE (__data_end, .)
+                0x0080035c                . = ALIGN (0x2)
+ *fill*         0x0080035b        0x1 
+                0x0080035c                _edata = .
+                0x0080035c                PROVIDE (__data_end, .)
 
-.bss            0x00800284      0xa84
-                0x00800284                PROVIDE (__bss_start, .)
+.bss            0x0080035c      0xa84
+                0x0080035c                PROVIDE (__bss_start, .)
  *(.bss)
  *(.bss*)
  .bss.x_system_counter
-                0x00800284        0x4 acx.o
-                0x00800284                x_system_counter
+                0x0080035c        0x4 acx.o
+                0x0080035c                x_system_counter
  .bss.last_temp
-                0x00800288        0x1 main.o
-                0x00800288                last_temp
- .bss.occupied  0x00800289        0x8 Queues.o
-                0x00800289                occupied
+                0x00800360        0x1 main.o
+                0x00800360                last_temp
+ .bss.occupied  0x00800361        0x8 Queues.o
+                0x00800361                occupied
  *(COMMON)
- COMMON         0x00800291      0x835 acx.o
-                0x00800291                x_thread_id
-                0x00800292                x_delay_status
-                0x00800293                stack
-                0x008002b3                x_suspend_status
-                0x008002b4                x_thread_stacks
-                0x00800ab4                x_thread_delay
-                0x00800ac4                x_disable_status
-                0x00800ac5                x_thread_mask
- COMMON         0x00800ac6        0x2 main.o
-                0x00800ac6                target_temp
-                0x00800ac7                service_mode
- COMMON         0x00800ac8       0x40 Queues.o
-                0x00800ac8                queues
- COMMON         0x00800b08      0x200 Serial.o
-                0x00800b08                buffer
-                0x00800d08                PROVIDE (__bss_end, .)
-                0x00000fc2                __data_load_start = LOADADDR (.data)
-                0x00001046                __data_load_end = (__data_load_start + SIZEOF (.data))
+ COMMON         0x00800369      0x835 acx.o
+                0x00800369                x_thread_id
+                0x0080036a                x_delay_status
+                0x0080036b                stack
+                0x0080038b                x_suspend_status
+                0x0080038c                x_thread_stacks
+                0x00800b8c                x_thread_delay
+                0x00800b9c                x_disable_status
+                0x00800b9d                x_thread_mask
+ COMMON         0x00800b9e        0x2 main.o
+                0x00800b9e                target_temp
+                0x00800b9f                service_mode
+ COMMON         0x00800ba0       0x40 Queues.o
+                0x00800ba0                queues
+ COMMON         0x00800be0      0x200 Serial.o
+                0x00800be0                buffer
+                0x00800de0                PROVIDE (__bss_end, .)
+                0x00001680                __data_load_start = LOADADDR (.data)
+                0x000017dc                __data_load_end = (__data_load_start + SIZEOF (.data))
 
-.noinit         0x00800d08        0x0
-                0x00800d08                PROVIDE (__noinit_start, .)
+.noinit         0x00800de0        0x0
+                0x00800de0                PROVIDE (__noinit_start, .)
  *(.noinit*)
-                0x00800d08                PROVIDE (__noinit_end, .)
-                0x00800d08                _end = .
-                0x00800d08                PROVIDE (__heap_start, .)
+                0x00800de0                PROVIDE (__noinit_end, .)
+                0x00800de0                _end = .
+                0x00800de0                PROVIDE (__heap_start, .)
 
 .eeprom         0x00810000        0x0
  *(.eeprom*)
@@ -574,7 +626,7 @@ END GROUP
 .stab.indexstr
  *(.stab.indexstr)
 
-.comment        0x00000000       0x30
+.comment        0x00000000       0x5c
  *(.comment)
  .comment       0x00000000       0x30 acx.o
                                  0x31 (size before relaxing)
@@ -582,6 +634,10 @@ END GROUP
  .comment       0x00000030       0x31 main.o
  .comment       0x00000030       0x31 Queues.o
  .comment       0x00000030       0x31 Serial.o
+ .comment       0x00000030       0x31 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr6\libc.a(sprintf.o)
+ .comment       0x00000030       0x2c c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr6\libc.a(vfprintf_std.o)
+                                 0x2d (size before relaxing)
+ .comment       0x0000005c       0x31 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr6\libc.a(fputc.o)
 
 .note.gnu.avr.deviceinfo
                 0x00000000       0x40
@@ -623,35 +679,35 @@ END GROUP
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000     0x19cb
+.debug_info     0x00000000     0x1baa
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000      0x527 acx.o
  .debug_info    0x00000527       0x6d acx_asm.o
  .debug_info    0x00000594       0x70 delay_usec.o
  .debug_info    0x00000604      0x357 DS18B20.o
- .debug_info    0x0000095b      0x567 main.o
- .debug_info    0x00000ec2      0x37b Queues.o
- .debug_info    0x0000123d      0x78e Serial.o
+ .debug_info    0x0000095b      0x746 main.o
+ .debug_info    0x000010a1      0x37b Queues.o
+ .debug_info    0x0000141c      0x78e Serial.o
 
-.debug_abbrev   0x00000000      0xa16
+.debug_abbrev   0x00000000      0xa30
  *(.debug_abbrev)
  .debug_abbrev  0x00000000      0x29e acx.o
  .debug_abbrev  0x0000029e       0x14 acx_asm.o
  .debug_abbrev  0x000002b2       0x14 delay_usec.o
  .debug_abbrev  0x000002c6      0x165 DS18B20.o
- .debug_abbrev  0x0000042b      0x1af main.o
- .debug_abbrev  0x000005da      0x1ad Queues.o
- .debug_abbrev  0x00000787      0x28f Serial.o
+ .debug_abbrev  0x0000042b      0x1c9 main.o
+ .debug_abbrev  0x000005f4      0x1ad Queues.o
+ .debug_abbrev  0x000007a1      0x28f Serial.o
 
-.debug_line     0x00000000     0x13d6
+.debug_line     0x00000000     0x148f
  *(.debug_line .debug_line.* .debug_line_end)
  .debug_line    0x00000000      0x3bb acx.o
  .debug_line    0x000003bb      0x258 acx_asm.o
  .debug_line    0x00000613       0x7b delay_usec.o
  .debug_line    0x0000068e      0x2a2 DS18B20.o
- .debug_line    0x00000930      0x204 main.o
- .debug_line    0x00000b34      0x326 Queues.o
- .debug_line    0x00000e5a      0x57c Serial.o
+ .debug_line    0x00000930      0x2bd main.o
+ .debug_line    0x00000bed      0x326 Queues.o
+ .debug_line    0x00000f13      0x57c Serial.o
 
 .debug_frame    0x00000000      0x740
  *(.debug_frame)
@@ -661,26 +717,26 @@ END GROUP
  .debug_frame   0x0000024c       0x8c Queues.o
  .debug_frame   0x000002d8      0x468 Serial.o
 
-.debug_str      0x00000000      0x614
+.debug_str      0x00000000      0x633
  *(.debug_str)
  .debug_str     0x00000000      0x2b0 acx.o
                                 0x2ee (size before relaxing)
  .debug_str     0x000002b0       0xa8 DS18B20.o
                                 0x213 (size before relaxing)
- .debug_str     0x00000358       0xcb main.o
-                                0x281 (size before relaxing)
- .debug_str     0x00000423       0x74 Queues.o
+ .debug_str     0x00000358       0xea main.o
+                                0x2a0 (size before relaxing)
+ .debug_str     0x00000442       0x74 Queues.o
                                 0x217 (size before relaxing)
- .debug_str     0x00000497      0x17d Serial.o
+ .debug_str     0x000004b6      0x17d Serial.o
                                 0x388 (size before relaxing)
 
-.debug_loc      0x00000000     0x1a2d
+.debug_loc      0x00000000     0x1a50
  *(.debug_loc)
  .debug_loc     0x00000000      0x38e acx.o
  .debug_loc     0x0000038e      0x2f1 DS18B20.o
- .debug_loc     0x0000067f       0x94 main.o
- .debug_loc     0x00000713      0x4dd Queues.o
- .debug_loc     0x00000bf0      0xe3d Serial.o
+ .debug_loc     0x0000067f       0xb7 main.o
+ .debug_loc     0x00000736      0x4dd Queues.o
+ .debug_loc     0x00000c13      0xe3d Serial.o
 
 .debug_macinfo
  *(.debug_macinfo)
