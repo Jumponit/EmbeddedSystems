@@ -34,19 +34,54 @@ volatile char service_mode;
  */
 void io_controller(void) {
 	Serial_open(0,19200,SERIAL_8N1);
+	int command_len = 4;
+	int opcode_len = 3;
+	char command[command_len];
+	char opcode[opcode_len];
 	char message[64];
+	char * str = message;
 	while(1) {
-		if(service_mode) {
-			//do service mode things
-			
-		} else {
-			//do non-service mode things
-			
-		}
+		//if we are able to read a command
+		if(Serial_read_string(0,command,command_len)) {
+			opcode[0] = command[0];
+			opcode[1] = command[1];
+			/************************************************************************/
+			/* Mode-selection commands                                              */
+			/************************************************************************/
+			if(!strcmp(opcode,"SM")) {//set service mode to true;
+				str = "Entering Service Mode\n\r";
+				Serial_write_string(0,str,strlen(str));
+				service_mode = 1;
+			} else if (!strcmp(opcode,"TM")) {//toggle service mode
+				service_mode = !service_mode;
+				if (service_mode) {
+					str = "Entering Service Mode\n\r";
+					Serial_write_string(0,str,strlen(str));
+				} else {
+					str = "Entering Operating Mode\n\r";
+					Serial_write_string(0,str,strlen(str));
+				}
+			} else if (!strcmp(opcode, "OM")) {//set service mode to false
+				str = "Entering Operating Mode\n\r";
+				Serial_write_string(0,str,strlen(str));
+				service_mode = 0;
+			} else {
+				/************************************************************************/
+				/* Mode-specific commands                                               */
+				/************************************************************************/
+				if(service_mode) {
+					//do service mode things
 		
-		//Serial_write(0, last_temp);
-		Serial_read_string(0, message, 64);
-		Serial_write_string(0, message, strlen(message));
+				} else {
+					//do operating mode things
+					
+				}
+			}
+
+		} else {
+			str = "Error reading command\n\r";
+			Serial_write_string(0,str,strlen(str));
+		}
 		x_delay(1000);
 	}
 }

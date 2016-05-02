@@ -162,7 +162,7 @@ int Serial_read_string(int port, char * data, int data_length) {
 		x_yield();
 	}
 	//we've used more than the whole array, error
-	return -1;
+	return 0;
 }
 
 int Serial_write(int port, char data)
