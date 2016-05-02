@@ -2,7 +2,7 @@
  * main.c
  *
  * Author : Taylor Morris
- */ 
+ */
 
 #include <avr/io.h>
 #include <util/delay.h>
@@ -43,10 +43,10 @@ void box_controller(void) {
 	DDRB |= 0x1 << PB4;
 	//PORTB |= 0x1 << PB4;
 	while(1) {
-		//x_delay(1000);
-		_delay_ms(1000);
+		x_delay(1000);
+		//_delay_ms(1000);
 		PORTB ^= 0x10;
-		x_yield();
+		//x_yield();
 	}
 }
 
@@ -54,7 +54,10 @@ void box_controller(void) {
  * Polls sensor for temperature every second
  */
 void sensor_controller(void) {
-	x_yield();
+	
+	while(1) {
+		x_yield();
+	}
 }
 
 int main(void)
@@ -64,6 +67,5 @@ int main(void)
 	x_new(2, io_controller, 1);
 	x_new(1, sensor_controller, 1);
 	x_new(0, box_controller, 1); //replaces main with box control logic*/
-	
-}
 
+}

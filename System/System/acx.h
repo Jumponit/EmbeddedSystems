@@ -16,14 +16,14 @@
 
 #define		STACK_CANARY		0xAA
 
-#define		T0_STACK_SIZE		128
-#define		T1_STACK_SIZE		128
-#define		T2_STACK_SIZE		128
-#define		T3_STACK_SIZE		128
-#define		T4_STACK_SIZE		128
-#define		T5_STACK_SIZE		128
-#define		T6_STACK_SIZE		128
-#define		T7_STACK_SIZE		128
+#define		T0_STACK_SIZE		256
+#define		T1_STACK_SIZE		256
+#define		T2_STACK_SIZE		256
+#define		T3_STACK_SIZE		256
+#define		T4_STACK_SIZE		256
+#define		T5_STACK_SIZE		256
+#define		T6_STACK_SIZE		256
+#define		T7_STACK_SIZE		256
 
 #define		STACK_MEM_SIZE		(T0_STACK_SIZE + T1_STACK_SIZE + \
 								T2_STACK_SIZE + T3_STACK_SIZE + T4_STACK_SIZE +\
