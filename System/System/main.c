@@ -31,7 +31,9 @@ void io_controller(void) {
 	//char * message = "H";
 	while(1) {
 		Serial_write(0, 'h');
-		x_yield();
+		//Serial_read(0);
+		//x_yield();
+		x_delay(1000);
 	}
 }
 
@@ -66,6 +68,5 @@ int main(void)
 	//Launch main three threads
 	x_new(2, io_controller, 1);
 	x_new(1, sensor_controller, 1);
-	x_new(0, box_controller, 1); //replaces main with box control logic*/
-
+	x_new(0, box_controller, 1); //replaces main with box control logic
 }
