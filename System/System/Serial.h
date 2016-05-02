@@ -76,4 +76,5 @@ char Serial0_poll_read();
 void Serial0_poll_write(char);
 void Serial0_poll_print(char *);
 int Serial_write_string(int port, char * data, int data_length);
+int Serial_read_string(int port, char * data, int data_length);
 #endif /* SERIAL_H_ */

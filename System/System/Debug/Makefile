@@ -38,13 +38,15 @@ SUBDIRS :=
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS +=  \
 ../acx.c \
+../DS18B20.c \
 ../main.c \
 ../Queues.c \
 ../Serial.c
 
 
 PREPROCESSING_SRCS +=  \
-../acx_asm.S
+../acx_asm.S \
+../delay_usec.s
 
 
 ASM_SRCS += 
@@ -53,6 +55,8 @@ ASM_SRCS +=
 OBJS +=  \
 acx.o \
 acx_asm.o \
+delay_usec.o \
+DS18B20.o \
 main.o \
 Queues.o \
 Serial.o
@@ -60,6 +64,8 @@ Serial.o
 OBJS_AS_ARGS +=  \
 acx.o \
 acx_asm.o \
+delay_usec.o \
+DS18B20.o \
 main.o \
 Queues.o \
 Serial.o
@@ -67,6 +73,8 @@ Serial.o
 C_DEPS +=  \
 acx.d \
 acx_asm.d \
+delay_usec.d \
+DS18B20.d \
 main.d \
 Queues.d \
 Serial.d
@@ -74,6 +82,8 @@ Serial.d
 C_DEPS_AS_ARGS +=  \
 acx.d \
 acx_asm.d \
+delay_usec.d \
+DS18B20.d \
 main.d \
 Queues.d \
 Serial.d
@@ -92,6 +102,8 @@ LINKER_SCRIPT_DEP+=
 
 
 # AVR32/GNU C Compiler
+
+
 
 
 
@@ -122,8 +134,22 @@ LINKER_SCRIPT_DEP+=
 	@echo Finished building: $<
 	
 
+./delay_usec.o: .././delay_usec.s
+	@echo Building file: $<
+	@echo Invoking: AVR/GNU Assembler : 4.9.2
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE) -Wa,-gdwarf2 -x assembler-with-cpp -c -mmcu=atmega2560 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.0.90\gcc\dev\atmega2560" -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)" -mrelax -Wa,-g   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
 
 ./%.o: .././%.S
+	@echo Building file: $<
+	@echo Invoking: AVR/GNU Assembler : 4.9.2
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE) -Wa,-gdwarf2 -x assembler-with-cpp -c -mmcu=atmega2560 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.0.90\gcc\dev\atmega2560" -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)" -mrelax -Wa,-g   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
+./%.o: .././%.s
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU Assembler : 4.9.2
 	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE) -Wa,-gdwarf2 -x assembler-with-cpp -c -mmcu=atmega2560 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.0.90\gcc\dev\atmega2560" -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)" -mrelax -Wa,-g   -o "$@" "$<" 

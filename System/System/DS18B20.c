@@ -10,7 +10,6 @@
 #include <stdlib.h>
 #include "DS18B20.h"
 #include "serial.h"
-#include "delay_usec.s"
 
 /************************************************************************/
 /* Attempts to determine whether there is a sensor attached.            */
@@ -151,5 +150,5 @@ void ow_print_temp(void) {
 	char temp_c = ow_read_temperature();
 	//char * message = "0x%x\n\r";
 	//sprintf(message, message, temp_c);
-	Serial_write(&temp_c, 1);
+	//Serial_write(&temp_c, 1);
 }

@@ -133,6 +133,15 @@
     <Compile Include="acx_asm.S">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="delay_usec.s">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="DS18B20.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="DS18B20.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="main.c">
       <SubType>compile</SubType>
     </Compile>

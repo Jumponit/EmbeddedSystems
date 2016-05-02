@@ -7,6 +7,7 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <util/atomic.h>
+#include <stdlib.h>
 
 #include "Queues.h"
 #include "acx.h"
@@ -138,6 +139,30 @@ int Serial_write_string(int port, char * data, int data_length) {
 		Serial_write(port, data[i]);
 	}
 	return 1;
+}
+
+int Serial_read_string(int port, char * data, int data_length) {
+	char latest;
+	int i = 0;
+	
+	//loop until end of data
+	while (i < data_length) {
+		//get latest character
+		latest = Serial_read(port);
+		if (latest != 0xFF) {
+			if (latest == 0x0D) {
+				//the input has terminated
+				data[i] = 0x00;//null terminate string
+				return 1;
+			}
+			//write the next character into the buffer
+			data[i++]=latest;
+		}
+		//if we got back a -1 from Serial_read, just loop again
+		x_yield();
+	}
+	//we've used more than the whole array, error
+	return -1;
 }
 
 int Serial_write(int port, char data)

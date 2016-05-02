@@ -1,4 +1,3 @@
-
 // Name:    delay_usec
 // Desc:    Busy-wait delay of of N + 1 microseconds, 
 //          where N is the input parameter. Assumes 16 MHz Atmega2560 processor.
