@@ -30,9 +30,31 @@ volatile char target_temp;
  */
 volatile char service_mode;
 
+/*
+ * Number of milliseconds to wait between temperature sampling.
+ */
+volatile char sample_rate = 250;
 
-volatile char * format = "%x";
+/*
+ * The format string used to generate output
+ */
+volatile char * format = "Last temp: 0x%x raw hex\n\r";
+
+/*
+ * If true, current reporting mode is celsius, otherwise Fahrenheit.
+ */
 volatile char celsius = 1;
+
+/*
+ * The over-temperature set point
+ */
+volatile char over_temp;
+
+/*
+* Number of seconds allowed to reach target temperature.
+*/
+volatile int timeout = 60;
+
 /*
  * Handles serial I/O
  */
@@ -45,6 +67,7 @@ void io_controller(void) {
 	char operand;
 	char message[64];
 	char * str = message;
+	char * formatStr;
 	while(1) {
 		//if we are able to read a command
 		if(Serial_read_string(0,command,command_len)) {
@@ -75,39 +98,79 @@ void io_controller(void) {
 				/* Mode-specific commands                                               */
 				/************************************************************************/
 				if(service_mode) {
+					operand = command[2];
 					//do service mode things
-		
+					if (!strcmp(opcode, "GT")) {
+						//Get temperature
+						char fmt_temp = last_temp;
+						if (!celsius) {
+							//this is equivalent to (9/5)*C + 32
+							fmt_temp = ((fmt_temp + (fmt_temp << 3))+160)/5;
+						}
+						if (sprintf(str, format, fmt_temp) < 0) {
+							str = "Formatting Error\n\r";
+						}
+						Serial_write_string(0, str, strlen(str));
+					} 
+					else if (!strcmp(opcode, "SP")) {
+						over_temp = operand;
+						formatStr = "Over-temperature set to %d degrees Celsius\n\r";
+						if (sprintf(str,formatStr,over_temp) < 0) {
+							str = "Formatting Error\n\r";
+						}
+						Serial_write_string(0, str, strlen(str));
+					} 
+					else if (!strcmp(opcode, "SO")) {
+						timeout = operand * 60;
+						formatStr = "Timeout set to %d seconds\n\r";
+						if (sprintf(str,formatStr,timeout) < 0) {
+							str = "Formatting Error\n\r";
+						}
+						Serial_write_string(0, str, strlen(str));
+					}
+					else {
+						str = "Unrecognized command\n\r";
+						Serial_write_string(0,str,strlen(str));
+					}
 				} else {
 					operand = command[2];
 					//do operating mode things
 					if (!strcmp(opcode, "ST")) {
 						//set temperature
 						target_temp = operand;
-						str = "Set target temperature to %d degrees Celsius\n\r";
-						if (sprintf(str,str,target_temp) < 0) {
-							str = "Formatting Error\n\r";
+						if (target_temp < 0 || target_temp > 125) {
+							str = "Invalid temperature selection. Sucks to suck.\n\r";
+						} else {
+							formatStr = "Set target temperature to %d degrees Celsius\n\r";
+							if (sprintf(str,formatStr,target_temp) < 0) {
+								str = "Formatting Error\n\r";
+							}
 						}
 						Serial_write_string(0,str,strlen(str));
 					} else if (!strcmp(opcode, "SR")) {
 						//set sample rate
+						sample_rate = operand;
+						format="Last temp: %x raw hex";
+						str = "Set format to Celsius Hexadecimal\n\r";
+						Serial_write_string(0,str,strlen(str));
 					} else if (!strcmp(opcode, "SD")) {
 						//set display format
 						switch (operand) {
 							case 'F':
-								format = "%d";
+								format = "Last temp: %d degrees Fahrenheit\n\r";
 								celsius = 0;
 								str = "Set format to Fahrenheit\n\r";
 								Serial_write_string(0,str,strlen(str));
 								break;
 							case 'C':
-								format = "%d";
+								format = "Last temp: %d degrees Celsius\n\r";
 								celsius = 1;
 								str = "Set format to Celsius\n\r";
 								Serial_write_string(0,str,strlen(str));
 								break;
 							case 'X':
 								celsius = 1;
-								format="%x";
+								format="Last temp: %x raw hex";
 								str = "Set format to Celsius Hexadecimal\n\r";
 								Serial_write_string(0,str,strlen(str));
 								break;
@@ -139,7 +202,7 @@ void box_controller(void) {
 	DDRB |= 0x1 << PB4;
 	//PORTB |= 0x1 << PB4;
 	while(1) {
-		x_delay(1000);
+		x_delay(sample_rate);
 		//_delay_ms(1000);
 		PORTB ^= 0x10;
 		//x_yield();
@@ -161,7 +224,7 @@ void sensor_controller(void) {
 	//monitor temperature
 	while(1) {
 		last_temp = ow_read_temperature();
-		x_delay(250);
+		x_delay(sample_rate);
 	}
 }
 
