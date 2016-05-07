@@ -39,7 +39,7 @@ volatile char sample_rate = 250;
 /*
  * The format string used to generate output
  */
-volatile char * format = "Last temp: 0x%x raw hex\n\r";
+//char * format = "Last temp: 0x%x raw hex\n\r";
 
 /*
  * If true, current reporting mode is celsius, otherwise Fahrenheit.
@@ -66,9 +66,10 @@ void io_controller(void) {
 	char command[command_len];
 	char opcode[opcode_len];
 	char operand[3];
-	char message[64];
-	char * str = message;
+	//char message[64];
+	char * str;
 	char * formatStr;
+	char * format = "Last temp: 0x%x raw hex\n\r";
 	while(1) {
 		//if we are able to read a command
 		if(Serial_read_string(0,command,command_len)) {
@@ -100,6 +101,11 @@ void io_controller(void) {
 				/************************************************************************/
 				if(service_mode) {
 					operand[0] = command[2];
+					operand[1] = 0x00;
+					if (command[3] != 0x00)
+					{
+						operand[1] = command[3];
+					}
 					//do service mode things
 					if (!strcmp(opcode, "GT")) {
 						//Get temperature
@@ -108,6 +114,7 @@ void io_controller(void) {
 							//this is equivalent to (9/5)*C + 32
 							fmt_temp = ((fmt_temp + (fmt_temp << 3))+160)/5;
 						}
+						str="";
 						if (sprintf(str, format, fmt_temp) < 0) {
 							str = "Formatting Error\n\r";
 						}
@@ -116,6 +123,7 @@ void io_controller(void) {
 					else if (!strcmp(opcode, "OV")) {
 						over_temp = atoi(operand);
 						formatStr = "Over-temperature set to %d degrees Celsius\n\r";
+						str="";
 						if (sprintf(str,formatStr,over_temp) < 0) {
 							str = "Formatting Error\n\r";
 						}
@@ -124,6 +132,7 @@ void io_controller(void) {
 					else if (!strcmp(opcode, "SO")) {
 						timeout = operand[0] * 60;
 						formatStr = "Timeout set to %d seconds\n\r";
+						str="";
 						if (sprintf(str,formatStr,timeout) < 0) {
 							str = "Formatting Error\n\r";
 						}
@@ -148,6 +157,7 @@ void io_controller(void) {
 							str = "Invalid temperature selection. Sucks to suck.\n\r";
 						} else {
 							formatStr = "Set target temperature to %d degrees Celsius\n\r";
+							str="";
 							if (sprintf(str,formatStr,target_temp) < 0) {
 								str = "Formatting Error\n\r";
 							}

@@ -135,8 +135,10 @@ int Serial_read(int port)
 }
 
 int Serial_write_string(int port, char * data, int data_length) {
-	for (int i = 0; i < data_length; i++) {
+	int i = 0;
+	while( data[i] != 0x00) {
 		Serial_write(port, data[i]);
+		i++;
 	}
 	return 1;
 }
