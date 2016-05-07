@@ -210,7 +210,7 @@ void io_controller(void) {
 			str = "Error reading command\n\r";
 			Serial_write_string(0,str,strlen(str));
 		}
-		x_delay(1000);
+		x_yield();
 	}
 }
 
