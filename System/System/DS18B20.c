@@ -120,6 +120,7 @@ int ow_read_temperature(void)
 	char temp_lsb,temp_msb;
 	int k;
 	char temp_c;
+	char shift_val = 4;
 	//char temp_f;
 	ow_reset();
 	ow_write_byte(0xCC); //Skip ROM
@@ -133,10 +134,10 @@ int ow_read_temperature(void)
 	}
 	temp_msb = get[1]; // Sign byte + lsbit
 	temp_lsb = get[0]; // Temp data plus lsb
-	if (temp_msb <= 0x80){temp_lsb = (temp_lsb/2);} // shift to get whole degree
+	if (temp_msb <= 0x80){temp_lsb = (temp_lsb>>shift_val) | (temp_msb<<(8-shift_val));} // shift to get whole degree
 	temp_msb = temp_msb & 0x80; // mask all but the sign bit
 	if (temp_msb >= 0x80) {temp_lsb = (~temp_lsb)+1;} // twos complement
-	if (temp_msb >= 0x80) {temp_lsb = (temp_lsb/2);}// shift to get whole degree
+	if (temp_msb >= 0x80) {temp_lsb = (temp_lsb>>shift_val) | ((~temp_msb)<<(8-shift_val));}// shift to get whole degree
 	if (temp_msb >= 0x80) {temp_lsb = ((-1)*temp_lsb);} // add sign bit
 	temp_c = temp_lsb; // ready for conversion to Fahrenheit
 	//temp_f = (((int)temp_c)* 9)/5 + 32;

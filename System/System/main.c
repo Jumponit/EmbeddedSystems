@@ -113,7 +113,7 @@ void io_controller(void) {
 						}
 						Serial_write_string(0, str, strlen(str));
 					} 
-					else if (!strcmp(opcode, "SP")) {
+					else if (!strcmp(opcode, "OV")) {
 						over_temp = atoi(operand);
 						formatStr = "Over-temperature set to %d degrees Celsius\n\r";
 						if (sprintf(str,formatStr,over_temp) < 0) {
