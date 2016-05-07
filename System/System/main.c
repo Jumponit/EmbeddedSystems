@@ -20,13 +20,13 @@
 /*
  * The most-recently measured temperature in degrees Celsius
  */
-volatile char last_temp = 0;
+volatile int last_temp = 0;
 
 /*
  * The most-recently requested temperature for the controlled box,
  * in degrees Celsius
  */
-volatile int target_temp;
+volatile int target_temp = 0;
 
 /*
  * If true, box is in service mode
@@ -49,14 +49,27 @@ volatile unsigned int sample_rate = 5000;
 volatile char celsius = 1;
 
 /*
- * The over-temperature set point
+ * The over-temperature set point in celsius
  */
-volatile int over_temp;
+volatile int over_temp = 80;
 
 /*
 * Number of seconds allowed to reach target temperature.
 */
 volatile int timeout = 60;
+
+
+void shut_down(void) {
+	
+	PORTB |= (0x1 << light_bulbs) | (0x1 << fans);
+	x_disable(0);
+	
+}
+
+void start_up(void) {
+	PORTB |= ~(0x1 << fans);
+	x_enable(0);
+}
 
 /*
  * Handles serial I/O
@@ -72,7 +85,7 @@ void io_controller(void) {
 	char message[64];
 	char * str;
 	char * formatStr;
-	char * format = "Last temp: 0x%x raw hex\n\r";
+	char * format = "Last temp: %d degrees Celsius\n\r";
 	while(1) {
 		//if we are able to read a command
 		if(Serial_read_string(0,command,command_len)) {
@@ -203,15 +216,23 @@ void io_controller(void) {
 
 /*
  * Controller for the box
+ *
+ * Fans on by default
  */
 void box_controller(void) {
-	//TODO: blink LED
-	DDRB |= (0x1 << light_bulbs) | (0x1 << fans);
+	
 	//PORTB |= 0x1 << PB4;
+	DDRB |= (0x1 << light_bulbs) | (0x1 << fans);	
+	PORTB &= ~(0x1 << fans);
 	while(1) {
+		if (last_temp >= over_temp) {
+			shut_down();
+		} else if (last_temp < target_temp) {
+			PORTB &= ~(0x1 << light_bulbs);
+		} else {
+			PORTB |= (0x1 << light_bulbs);
+		}
 		x_delay(sample_rate);
-		//_delay_ms(1000);
-		PORTB ^= (0x1 << light_bulbs) | (0x1 << fans);
 		//x_yield();
 	}
 }
@@ -234,6 +255,10 @@ void sensor_controller(void) {
 		x_delay(sample_rate);
 	}
 }
+
+
+
+
 
 int main(void)
 {
