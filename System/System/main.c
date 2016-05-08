@@ -31,17 +31,12 @@ volatile int target_temp = 0;
 /*
  * If true, box is in service mode
  */
-volatile char service_mode;
+volatile char service_mode = 0;
 
 /*
  * Number of milliseconds to wait between temperature sampling.
  */
-volatile unsigned int sample_rate = 5000;
-
-/*
- * The format string used to generate output
- */
-//char * format = "Last temp: 0x%x raw hex\n\r";
+volatile unsigned int sample_rate = 1000;
 
 /*
  * If true, current reporting mode is celsius, otherwise Fahrenheit.
@@ -56,19 +51,40 @@ volatile int over_temp = 80;
 /*
 * Number of seconds allowed to reach target temperature.
 */
-volatile int timeout = 60;
+volatile int timeout = 300;
 
-
+/*
+ * Permanently shut down the system.
+ */
 void shut_down(void) {
-	
 	PORTB |= (0x1 << light_bulbs) | (0x1 << fans);
 	x_disable(0);
 	
 }
 
+/*
+ * Reverse the effects of shut down.
+ */
 void start_up(void) {
 	PORTB |= ~(0x1 << fans);
 	x_enable(0);
+}
+
+/*
+ * Periodically check for abort condition
+ */
+void timeout_controller(void) {
+	while(1) {
+		for (int i = 0; i < timeout; i++) {
+			x_delay(1000);
+		}
+		if (last_temp < target_temp-1) {
+			char * message = "Timeout occurred; Shutting down.\n\r";
+			Serial_write_string(0, message, strlen(message));
+			shut_down();
+			x_disable(3);
+		}
+	}
 }
 
 /*
@@ -91,14 +107,10 @@ void io_controller(void) {
 		if(Serial_read_string(0,command,command_len)) {
 			opcode[0] = command[0];
 			opcode[1] = command[1];
-			for (int i = 0; i < operand_len; i++)
-			{
-				if (command[i+2] != 0x00)
-				{
+			for (int i = 0; i < operand_len; i++) {
+				if (command[i+2] != 0x00) {
 					operand[i] = command[i+2];
-				}
-				else
-				{
+				} else {
 					operand[i] = 0x00;
 				}
 			}
@@ -137,20 +149,26 @@ void io_controller(void) {
 						}
 						sprintf((char *) message, format, fmt_temp);
 						Serial_write_string(0, (char *) message, strlen((char *) message));
-					} 
-					else if (!strcmp(opcode, "OV")) {
+					} else if (!strcmp(opcode, "OV")) {
 						over_temp = atoi(operand);
 						formatStr = "Over-temperature set to %d degrees Celsius\n\r";
 						sprintf((char *) message,formatStr,over_temp);
 						Serial_write_string(0, (char *) message, strlen((char *) message));
-					} 
-					else if (!strcmp(opcode, "SO")) {
-						timeout = operand[0] * 60;
+					} else if (!strcmp(opcode, "SO")) {
+						timeout = atoi(operand) * 60;
 						formatStr = "Timeout set to %d seconds\n\r";
 						sprintf((char *) message,formatStr,timeout);
 						Serial_write_string(0, (char *) message, strlen((char *) message));
-					}
-					else {
+						x_new(3, timeout_controller, 1);//kick off the timeout
+					} else if (!strcmp(opcode, "TL")) {
+						PORTB ^= (0x1 << light_bulbs);
+						str = "Toggling Lights\n\r";
+						Serial_write_string(0,str,strlen(str));
+					} else if (!strcmp(opcode, "TF")) {
+						PORTB ^= (0x1 << fans);
+						str = "Toggling Fans\n\r";
+						Serial_write_string(0,str,strlen(str));
+					} else {
 						str = "Unrecognized command\n\r";
 						Serial_write_string(0,str,strlen(str));
 					}
@@ -205,7 +223,6 @@ void io_controller(void) {
 					}
 				}
 			}
-
 		} else {
 			str = "Error reading command\n\r";
 			Serial_write_string(0,str,strlen(str));
@@ -220,20 +237,22 @@ void io_controller(void) {
  * Fans on by default
  */
 void box_controller(void) {
-	
-	//PORTB |= 0x1 << PB4;
 	DDRB |= (0x1 << light_bulbs) | (0x1 << fans);	
 	PORTB &= ~(0x1 << fans);
 	while(1) {
 		if (last_temp >= over_temp) {
+			char * message = "Maximum Temperature exceeded; Shutting down.\n\r";
+			Serial_write_string(0, message, strlen(message));
 			shut_down();
-		} else if (last_temp < target_temp) {
-			PORTB &= ~(0x1 << light_bulbs);
-		} else {
-			PORTB |= (0x1 << light_bulbs);
+		}
+		if (!service_mode) {
+			if (last_temp < target_temp) {
+				PORTB &= ~(0x1 << light_bulbs);
+			} else {
+				PORTB |= (0x1 << light_bulbs);
+			}
 		}
 		x_delay(sample_rate);
-		//x_yield();
 	}
 }
 
@@ -257,14 +276,12 @@ void sensor_controller(void) {
 }
 
 
-
-
-
 int main(void)
 {
 	x_init();
 	//Launch main three threads
 	x_new(2, io_controller, 1);
 	x_new(1, sensor_controller, 1);
-	x_new(0, box_controller, 1); //replaces main with box control logic
+	x_new(3, timeout_controller, 1);
+	x_new(0, box_controller, 1); //replaces main with box control logic)
 }
