@@ -17,7 +17,7 @@
 unsigned char ow_reset(void)
 {
 	unsigned char presence;
-
+	
  // pull DQ line low
 	DDRE |= (1 << PE4); //set for output
 	PORTE &= ~(1 << PE4); //set value low
@@ -72,7 +72,6 @@ void ow_write_bit(char bitval)
 	if (bitval == 1) {
 		PORTE |= (1 << PE4); //set value high
 	}
-	
 	delay_usec(59); //wait 60us
 	
 	PORTE |= (1 << PE4); //set value high
@@ -107,7 +106,6 @@ void ow_write_byte(char val)
 		temp &= 0x01;
 		ow_write_bit(temp);
 	}
-	
 	delay_usec(119); //wait 120us
 }
 
@@ -121,7 +119,6 @@ int ow_read_temperature(void)
 	int k;
 	char temp_c;
 	char shift_val = 4;
-	//char temp_f;
 	ow_reset();
 	ow_write_byte(0xCC); //Skip ROM
 	ow_write_byte(0x44); // Start Conversion
@@ -140,7 +137,6 @@ int ow_read_temperature(void)
 	if (temp_msb >= 0x80) {temp_lsb = (temp_lsb>>shift_val) | ((~temp_msb)<<(8-shift_val));}// shift to get whole degree
 	if (temp_msb >= 0x80) {temp_lsb = ((-1)*temp_lsb);} // add sign bit
 	temp_c = temp_lsb; // ready for conversion to Fahrenheit
-	//temp_f = (((int)temp_c)* 9)/5 + 32;
 	return temp_c;
 }
 
@@ -149,7 +145,4 @@ int ow_read_temperature(void)
 /************************************************************************/
 void ow_print_temp(void) {
 	char temp_c = ow_read_temperature();
-	//char * message = "0x%x\n\r";
-	//sprintf(message, message, temp_c);
-	//Serial_write(&temp_c, 1);
 }
