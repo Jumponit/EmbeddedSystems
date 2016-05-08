@@ -3,7 +3,7 @@
  *
  * Created: 3/3/2016 2:24:42 PM
  *  Author: joycemj, taylor morris
- */ 
+ */
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <util/atomic.h>
@@ -23,6 +23,7 @@ SERIAL_PORT ports[4] = {
 	{0, 0, buffer[6], P3_RX_BUFFER_SIZE, buffer[7], P3_TX_BUFFER_SIZE}
 };
 
+//Initialize serial regs
 SERIAL_PORT_REGS *regs[4] = {
 	(SERIAL_PORT_REGS *) 0xC0,
 	(SERIAL_PORT_REGS *) 0xC8,
@@ -30,71 +31,86 @@ SERIAL_PORT_REGS *regs[4] = {
 	(SERIAL_PORT_REGS *) 0x130
 };
 
+
+/*
+* Serial_open
+*
+* Serial_open configures the specified serial port (USART) for operation according the specified baud rate and configuration.
+* It uses Queue functions to allocate a QCB to manage transmit and receive buffers. It initializes the interface between the
+* ISRs (RXC and UDRE) and the queues for the port by initializing the QCB "handles" to be used by the ISRs. The RXCx interrupt is enabled.
+* Serial_open returns 0 for success and -1 if an error occurs (e.g., bad port ID, baud rate, frame parameters or invalid buffer sizes).
+*
+* @param int port - specifies USART 0, 1, 2 or 3. For right now, 0 is the only one active.
+* @param long speed - baud rate
+* @param constant that specifies framing parameters (data bits, parity, stop bits)
+* @return returns 0 for success and -1 if an error occurs
+*/
 int Serial_open(int port, long speed, int config)
 {
 	if (port < 0 || port > 3)
 	{
 		return -1;
 	}
-	
+	//Creates a Rqueue forRX and TX
 	ports[port].rx_qid = Q_create(ports[port].rx_bufsize, ports[port].rx_buffer);
 	ports[port].tx_qid = Q_create(ports[port].tx_bufsize, ports[port].tx_buffer);
-	
+
+	//Sets U2X0 to 1 for lowest error rate
 	regs[port]->ucsra |= (1<<U2X0); //Changed made here
-	
+
 	long reg_set = -1;
-	
+
 	switch(speed)
 	{
 		case 2400:
 		reg_set = 832;
 		break;
-		
+
 		case 4800:
 		reg_set = 416;
 		break;
-		
+
 		case 9600:
 		reg_set = 207;
 		break;
-		
+
 		case 14400:
 		reg_set = 138;
 		break;
-		
+
 		case 19200:
 		reg_set = 103;
 		break;
-		
+
 		case 28800:
 		reg_set = 68;
 		break;
-		
+
 		case 38400L:
 		reg_set = 51;
 		break;
-		
+
 		case 57600L:
 		reg_set = 34;
 		break;
-		
+
 		case 76800L:
 		reg_set = 25;
 		break;
-		
+
 		case 115200L:
 		reg_set = 16;
 		break;
-		
+
 		case 230400L:
 		reg_set = 8;
 		break;
-		
+
 		case 250000L:
 		reg_set = 7;
 		break;
 	}
-	
+
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
 	{
 		regs[port]->ubrr = reg_set;
@@ -105,7 +121,8 @@ int Serial_open(int port, long speed, int config)
 	return 0;
 }
 
-
+/*
+*
 void Serial_close(int port)
 {
 	regs[port]->ucsrb = 0;
@@ -122,7 +139,7 @@ int Serial_read(int port)
 {
 	char qdata = 0;
 	int data;
-	
+
 	if (Q_getc(ports[port].rx_qid, &qdata))
 	{
 		data = qdata;
@@ -146,7 +163,7 @@ int Serial_write_string(int port, char * data, int data_length) {
 int Serial_read_string(int port, char * data, int data_length) {
 	char latest;
 	int i = 0;
-	
+
 	//loop until end of data
 	while (i < data_length) {
 		//get latest character
@@ -171,13 +188,13 @@ int Serial_write(int port, char data)
 {
 	if (Q_putc(ports[port].tx_qid, data))
 	{
-		//regs[port].ucsrb |= (0x1 << 5); //Commented out line	
-		regs[port]->ucsrb |= (1<<UDRIE0); 
+		//regs[port].ucsrb |= (0x1 << 5); //Commented out line
+		regs[port]->ucsrb |= (1<<UDRIE0);
 		//regs[port].ucsra |= (0x1 << 5); //This might be wrong.
-		return 1;	
+		return 1;
 	}
 	return -1;
-	
+
 }
 
 ISR(USART0_UDRE_vect)
@@ -256,65 +273,65 @@ ISR(USART3_RX_vect)
 
 void serial_open(long speed, int config)
 {
-   
+
     UCSR0A |= (1<<U2X0);
     switch(speed)
 	{
 		case 2400:
 		UBRR0 = 832;
 		break;
-		
+
 		case 4800:
 		UBRR0 = 416;
 		break;
-		
+
 		case 9600:
 		UBRR0 = 207;
 		break;
-		
+
 		case 14400:
 		UBRR0 = 138;
 		break;
-		
+
 		case 19200:
 		UBRR0 = 103;
 		break;
-		
+
 		case 28800:
 		UBRR0 = 68;
 		break;
-		
+
 		case 38400L:
 		UBRR0 = 51;
 		break;
-		
+
 		case 57600L:
 		UBRR0 = 34;
 		break;
-		
+
 		case 76800L:
 		UBRR0 = 25;
 		break;
-		
+
 		case 115200L:
 		UBRR0 = 16;
 		break;
-		
+
 		case 230400L:
 		UBRR0 = 8;
 		break;
-		
+
 		case 250000L:
 		UBRR0 = 7;
-		break;	
+		break;
 	}
-	
+
 	UCSR0C = config;
 
 	//UBRR0H = (UBRR0 >> 8);
 	//UBRR0L = (unsigned char)UBRR0;
 	//Receiver and Transmitter Enable
-	UCSR0B = (1<<TXEN0) | (1<<RXEN0); 
+	UCSR0B = (1<<TXEN0) | (1<<RXEN0);
 
 }
 
@@ -323,7 +340,7 @@ char serial_read()
 	//Contents of the Received Data Buffer Register
 	while (!(UCSR0A & (1<<RXC0)))
 	{
-		//Wait for data to be received. 
+		//Wait for data to be received.
 		//x_yield();
 	}
 	return UDR0;
@@ -336,7 +353,5 @@ void serial_write(char data)
 		//Wait for empty transmit buffer
 		//x_yield();
 	}
-	UDR0 = data; 
+	UDR0 = data;
 }
-
-
