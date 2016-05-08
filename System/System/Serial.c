@@ -111,18 +111,26 @@ int Serial_open(int port, long speed, int config)
 		break;
 	}
 
+	//Protects from interrupts
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
 	{
-		regs[port]->ubrr = reg_set;
-		regs[port]->ucsrc = config;
-		regs[port]->ucsrb = (1<<RXEN0) | (1<<TXEN0) | (1<<RXCIE0);
+		
+		regs[port]->ubrr = reg_set; //Sets the baud rate
+		regs[port]->ucsrc = config; //Sets the data frame structure
+		regs[port]->ucsrb = (1<<RXEN0) | (1<<TXEN0) | (1<<RXCIE0); //Enables RX, TX, and RX interrupt
 	}
-	sei();
+	sei(); //Enables global interrupts
 	return 0;
 }
 
 /*
+* Serial_close
 *
+* Turns off the specified serial port (USART) function by 
+* disabling transmitter and receiver, deleting the queues, disabling interrupts, etc. 
+*
+* @param int port - the port ID of the serial port to close.
+*/
 void Serial_close(int port)
 {
 	regs[port]->ucsrb = 0;
@@ -130,11 +138,30 @@ void Serial_close(int port)
 	Q_delete(ports[port].tx_qid);
 }
 
+/*
+* Serial_available
+*
+* Returns number of bytes available for reading from the specified serial port.
+*
+* @param int port - the serial port ID.
+* @return int - Number of byte avaible for reading.
+*/
 int Serial_available(int port)
 {
 	return Q_used(ports[port].rx_qid);
 }
 
+/*
+* Serial_read
+*
+* Read next available character from the specified port. If no character is available a value of -1 is returned. 
+* Note that the return type is int rather then char or an 8-bit type. This allows for the test for -1 to work.
+* Any 8-bit character (including 0xFF) returned as an int (e.g. 0x00FF) will be positive. 
+* You should test for -1 before using the return value as a character.
+*
+* @param int port - the serial port ID
+* @return data or -1 if queue is empty
+*/
 int Serial_read(int port)
 {
 	char qdata = 0;
@@ -151,6 +178,16 @@ int Serial_read(int port)
 	}
 }
 
+/*
+* Serial_write_string
+*
+* Writes a string to the serial port one byte at a time.
+*
+* @param int port - the port ID
+* @param char * data - the character array to be written
+* @param int data_length - the length of the char array
+* @return int - always returns 1.
+*/
 int Serial_write_string(int port, char * data, int data_length) {
 	int i = 0;
 	while( data[i] != 0x00) {
@@ -160,6 +197,16 @@ int Serial_write_string(int port, char * data, int data_length) {
 	return 1;
 }
 
+/*
+* Serial_read_string
+*
+* Reads a string form a specified serial port.
+*
+* @param int port - the port ID
+* @param char * data - the array to be read into
+* @param int data_length - the length of the char array
+* @return int - 1 if sucessful, 0 if not
+*/
 int Serial_read_string(int port, char * data, int data_length) {
 	char latest;
 	int i = 0;
@@ -184,6 +231,16 @@ int Serial_read_string(int port, char * data, int data_length) {
 	return 0;
 }
 
+/*
+* Serial_write
+*
+* Writes one data byte to the serial port. This function enables the transmit ISR (UDRIEx = 1) and blocks until the 
+* write to the corresponding queue is successful. The return value is always 1. 
+* 
+* @param int port - the port ID
+* @param char data - the char to be written to the serial port.
+* @return 1 if successful, -1 if not
+*/
 int Serial_write(int port, char data)
 {
 	if (Q_putc(ports[port].tx_qid, data))
@@ -197,6 +254,11 @@ int Serial_write(int port, char data)
 
 }
 
+/*
+* ISR(USART0_UDRE_vect)
+*
+* Called when UDRIE0 is flagged.
+*/
 ISR(USART0_UDRE_vect)
 {
 	char data;
@@ -210,7 +272,11 @@ ISR(USART0_UDRE_vect)
 	}
 }
 
-
+/*
+* ISR(USART1_UDRE_vect)
+*
+* Called when UDRIE1 is flagged.
+*/
 ISR(USART1_UDRE_vect)
 {
 	char data;
@@ -224,6 +290,11 @@ ISR(USART1_UDRE_vect)
 	}
 }
 
+/*
+* ISR(USART2_UDRE_vect)
+*
+* Called when UDRIE2 is flagged.
+*/
 ISR(USART2_UDRE_vect)
 {
 	char data;
@@ -237,6 +308,11 @@ ISR(USART2_UDRE_vect)
 	}
 }
 
+/*
+* ISR(USART3_UDRE_vect)
+*
+* Called when UDRIE3 is flagged.
+*/
 ISR(USART3_UDRE_vect)
 {
 	char data;
@@ -250,21 +326,41 @@ ISR(USART3_UDRE_vect)
 	}
 }
 
+/*
+* ISR(USART0_RX_vect)
+*
+* Called when there is a value in UDR0
+*/
 ISR(USART0_RX_vect)
 {
 	Q_putc(ports[0].rx_qid, UDR0);
 }
 
+/*
+* ISR(USART1_RX_vect)
+*
+* Called when there is a value in UDR1
+*/
 ISR(USART1_RX_vect)
 {
 	Q_putc(ports[1].rx_qid, UDR1);
 }
 
+/*
+* ISR(USART2_RX_vect)
+*
+* Called when there is a value in UDR2
+*/
 ISR(USART2_RX_vect)
 {
 	Q_putc(ports[2].rx_qid, UDR2);
 }
 
+/*
+* ISR(USART3_RX_vect)
+*
+* Called when there is a value in UDR3
+*/
 ISR(USART3_RX_vect)
 {
 	Q_putc(ports[3].rx_qid, UDR3);
