@@ -54,10 +54,16 @@ volatile int over_temp = 80;
 volatile int timeout = 300;
 
 /*
+ * The format used for all temperature reading output.
+ */
+char * format = "Last temp: %d degrees Celsius\n\r";
+
+/*
  * Permanently shut down the system.
  */
 void shut_down(void) {
 	PORTB |= (0x1 << light_bulbs) | (0x1 << fans);
+	x_disable(1);
 	x_disable(0);
 
 }
@@ -68,6 +74,7 @@ void shut_down(void) {
 void start_up(void) {
 	PORTB |= ~(0x1 << fans);
 	x_enable(0);
+	x_enable(1);
 }
 
 /*
@@ -113,7 +120,7 @@ void io_controller(void) {
 	char message[64];
 	char * str;
 	char * formatStr;
-	char * format = "Last temp: %d degrees Celsius\n\r";
+	
 	while(1) {
 		//if we are able to read a command
 		if(Serial_read_string(0,command,command_len)) {
@@ -330,9 +337,24 @@ void sensor_controller(void) {
 		//give other threads a chance to act during this process
 		x_yield();
 	}
+	
+	//prep I/O
+	char message[64];
+	char fmt_temp;
+	
 	//monitor temperature
 	while(1) {
 		last_temp = ow_read_temperature();
+		if (!service_mode) {
+			fmt_temp = last_temp;
+			if (!celsius) {
+				//this is equivalent to (9/5)*C + 32
+				fmt_temp = ((fmt_temp + (fmt_temp << 3))+160)/5;
+			}
+			
+			sprintf((char *) message, format, fmt_temp);
+			Serial_write_string(0, (char *) message, strlen((char *) message));
+		}
 		x_delay(sample_rate);
 	}
 }

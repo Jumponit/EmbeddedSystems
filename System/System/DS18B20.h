@@ -15,6 +15,5 @@ unsigned char ow_read_bit();
 void ow_write_bit(char);
 void ow_write_byte(char);
 int ow_read_temperature(void);
-void ow_print_temp(void);
 
 #endif /* DS18B20_H_ */

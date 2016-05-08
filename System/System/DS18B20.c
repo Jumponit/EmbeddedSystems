@@ -139,10 +139,3 @@ int ow_read_temperature(void)
 	temp_c = temp_lsb; // ready for conversion to Fahrenheit
 	return temp_c;
 }
-
-/************************************************************************/
-/* Print the temperature to the serial port. (must have already opened serial)*/
-/************************************************************************/
-void ow_print_temp(void) {
-	char temp_c = ow_read_temperature();
-}
