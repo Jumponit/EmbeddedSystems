@@ -44,7 +44,7 @@ byte Q_putc(byte qid, char data)
 			}
 			else
 			{
-				qcb->in = (qcb->in + 1) & qcb->smask; //If so,
+				qcb->in = (qcb->in + 1) & qcb->smask; //If so, increment but set full flag
 				qcb->flags = 1;
 			}
 		}
@@ -62,24 +62,24 @@ byte Q_putc(byte qid, char data)
 byte Q_getc(byte qid, char *pdata)
 {
 	QCB *qcb = &queues[qid];
-	if (qcb->flags != 2)
+	if (qcb->flags != 2) //Checks if queue is empty
 	{
 		ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
 		{
-			*pdata = *(qcb->pQ + qcb->out);
+			*pdata = *(qcb->pQ + qcb->out); //Sets next byte to the given value
 			qcb->available -= 1;
-			if (qcb->flags == 1)
+			if (qcb->flags == 1) //Checks if queue was full, and if so, clears full flag
 			{
 				qcb->flags = 0;
 			}
 
-			if (((qcb->out + 1) & qcb->smask) != qcb->in)
+			if (((qcb->out + 1) & qcb->smask) != qcb->in) //Checks if queue is empty
 			{
-				qcb->out = (qcb->out + 1) & qcb->smask;
+				qcb->out = (qcb->out + 1) & qcb->smask; //If not, increments pointer for next byte
 			}
 			else
 			{
-				qcb->out = (qcb->out + 1) & qcb->smask;
+				qcb->out = (qcb->out + 1) & qcb->smask; //If so, increment, but set empty flag
 				qcb->flags = 2;
 			}
 		}
@@ -93,14 +93,14 @@ byte Q_getc(byte qid, char *pdata)
  */
 uint8_t Q_create(int qsize, char * pbuffer)
 {
-	if ((qsize <= 0) || (qsize > 256) || (qsize & (qsize - 1)) != 0)
+	if ((qsize <= 0) || (qsize > 256) || (qsize & (qsize - 1)) != 0) //Checks for valid size
 	{
 		return -1;
 	}
 
-	for (int i = 0; i < QCB_MAX_COUNT; i++)
+	for (int i = 0; i < QCB_MAX_COUNT; i++) //Checks all queues
 	{
-		if (occupied[i] == false)
+		if (occupied[i] == false) //If it finds a queue unoccupied, set all parameters to defaults
 		{
 			queues[i].in = 0;
 			queues[i].out = 0;
@@ -134,6 +134,10 @@ void Q_delete(byte qid)
  */
 int Q_used(byte qid)
 {
+	if (qid >= QCB_MAX_COUNT)
+	{
+		return -1;
+	}
 	return queues[qid].available;
 }
 
